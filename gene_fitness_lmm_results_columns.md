@@ -1,0 +1,63 @@
+# PPAT Gene Fitness LMM Results (no SuSIE) — Column Guide
+
+- **`pioneer_genome`**: Full genome name including species, strain, and GCF accession (e.g. Bacillus_subtilis_PY79_GCF_023521615.1).
+- **`species_name`**: Species name (e.g. Bacillus subtilis).
+- **`gene_id`**: NCBI gene identifier, prefixed with 'gene-' (e.g. gene-C2H97_RS00005).
+- **`locus_tag`**: NCBI locus tag -- same as gene_id without the 'gene-' prefix; used as join key for lmer results.
+- **`gene_bioname`**: Gene name, or locus_tag if no name is assigned (e.g. dxs).
+- **`gene_biotype`**: Gene type (e.g. protein_coding).
+- **`gene_chrom`**: RefSeq chromosome or contig accession.
+- **`gene_strand`**: Strand ('+' or '-').
+- **`gene_start`**: Gene start coordinate (0-based).
+- **`gene_end`**: Gene end coordinate.
+- **`cds_length`**: Coding sequence length in bp.
+- **`protein_id`**: RefSeq protein accession (e.g. WP_003245985.1).
+- **`bayes_estimate`**: Posterior mean gene fitness effect (log-scale). Positive = overexpression is beneficial in that condition, negative = deleterious.
+- **`bayes_z_score`**: bayes_estimate / bayes_gene_sigma -- effect size in units of its own uncertainty.
+- **`bayes_gene_sigma`**: Posterior standard deviation of the gene effect.
+- **`bayes_q_value`**: Benjamini-Hochberg FDR-corrected q-value. Genes with bayes_q_value < 0.05 and |bayes_z_score| > 3 are considered significant.
+- **`condition`**: Experimental condition: LB or LB_4_salt.
+- **`lmer_estimate`**: Fixed-effect estimate for the focal gene from the local lmer model (fitness ~ focal_gene + neighbors + replicate + (1|insert_id), fit within a 5kb window).
+- **`lmer_standard_error`**: Standard error of lmer_estimate.
+- **`lmer_shapiro_stat`**: Shapiro-Wilk statistic on model residuals for fragments covering the focal gene -- tests the normality assumption.
+- **`lmer_shapiro_p`**: p-value for the Shapiro-Wilk test above.
+- **`lmer_insert_var`**: Estimated variance of the fragment-level random effect (1|insert_id) -- reflects how much fitness variability is attributable to fragment identity vs. the gene being overexpressed.
+- **`lmer_z_value`**: lmer_estimate / lmer_standard_error.
+- **`lmer_p_value`**: p-value from the lmer model.
+- **`lmer_q_value`**: Benjamini-Hochberg FDR-corrected q-value across all tested genes.
+- **`n_inserts`**: Total number of unique barcoded fragments fully covering this gene in this condition.
+- **`n_sense_inserts`**: Fragments where the gene is in sense orientation relative to the synthetic promoter -- more likely to drive overexpression of the gene.
+- **`n_antisense_inserts`**: Fragments where the gene is in antisense orientation relative to the synthetic promoter -- serve as a within-library control for fragment presence without overexpression.
+- **`VIF`**: Variance Inflation Factor for this gene (VIF = 1 / (1 - R^2)), computed from a binary fragment indicator matrix within a +/-5kb genomic window. VIF = 1 means no collinearity; high VIF means the gene is almost always co-covered with its neighbors, making its individual effect estimate unreliable.
+- **`gene_call`**: Final call: Hit, Not Hit, or Unknown (thresholds: Bayesian q<0.05 & |z|>3, lmer q<0.05, VIF<=10, n_inserts>=3, n_inserts/VIF>=2).
+- **`unk_bucket_0`**: Boolean -- gene flagged Unknown because n_inserts is NaN (no insert data; gene was never captured in the frequentist LMM step).
+- **`unk_bucket_1`**: Boolean -- gene flagged Unknown because VIF > 10 OR n_inserts < 3 (collinear or too few fragments to trust the estimate).
+- **`unk_bucket_2`**: Boolean -- gene flagged Unknown because n_inserts / VIF < 2 (effective independent fragment count is very low).
+- **`unk_bucket_3`**: Boolean -- gene flagged Unknown because both models are significant but with opposite effect directions.
+- **`bayes_island_id`**: String label (group_N) identifying runs of consecutive significant genes (bayes_q_value < 0.05) on the same chromosome. NaN for non-significant genes.
+- **`orthogroup`**: OrthoFinder orthogroup ID; singletons are labeled singleton:{protein_id}.
+- **`is_single_copy`**: Whether the orthogroup is single-copy across the genome panel.
+- **`seed_ortholog`**: Best-hit eggNOG seed ortholog.
+- **`evalue`**: E-value of the best-hit eggNOG seed ortholog match.
+- **`score`**: Score of the best-hit eggNOG seed ortholog match.
+- **`eggNOG_OGs`**: Matching eggNOG orthologous groups at multiple taxonomic levels.
+- **`COG_category`**: COG functional category letter code.
+- **`Description`**: Free-text function description from eggNOG.
+- **`Preferred_name`**: Preferred gene symbol from eggNOG.
+- **`GOs`**: GO terms associated with the gene.
+- **`EC`**: Enzyme Commission (EC) number.
+- **`KEGG_ko`**: KEGG ortholog accession(s).
+- **`KEGG_Pathway`**: KEGG pathway accession(s).
+- **`KEGG_Module`**: KEGG module accession(s).
+- **`best_e_coli_k12_match`**: Best E. coli K-12 homolog.
+- **`pident_to_e_coli_k12`**: Percent identity to the best E. coli K-12 homolog.
+- **`PFAMs`**: Pfam domain accession(s).
+- **`PFAM_descriptions`**: Pfam domain description(s).
+- **`gc_content`**: CDS GC content.
+- **`CAI_rel_to_Ecoli`**: Codon Adaptation Index relative to E. coli.
+- **`EFF_CODON_N`**: Count of efficient codons in the CDS.
+- **`RARE_CODON_N`**: Count of rare codons in the CDS.
+- **`rbs_sequence`**: 17bp nucleotide sequence immediately upstream of the gene's start codon; the input fed to the SAPIENs RBS model.
+- **`Sapiens_RBS_Score`**: Predicted ribosome binding site (RBS) translation strength from the SAPIENs model -- ensemble mean of 10 residual-CNN sub-models (each a Beta(alpha, beta) distribution), scaled [0, 1]. Higher = stronger predicted translation initiation.
+- **`Sapiens_RBS_Score_Var`**: Ensemble variance across the 10 SAPIENs sub-model predictions -- captures model uncertainty and inter-model disagreement in Sapiens_RBS_Score.
+- **`rbs_GC_content`**: GC base count (not percent) of the 17bp RBS window used for the SAPIENs prediction -- distinct from the gene-level gc_content column (CDS GC%).

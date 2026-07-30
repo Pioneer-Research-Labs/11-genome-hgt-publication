@@ -1,0 +1,11 @@
+# data and regenerated outputs -- populate data/ yourself, see README
+data/
+results/
+
+# python / jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# os cruft
+.DS_Store
