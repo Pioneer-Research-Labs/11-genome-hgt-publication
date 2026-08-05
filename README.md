@@ -27,10 +27,10 @@ following files in it before running any notebook:
 | `data/gene_annotation.parquet` | figure1 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
 | `data/strand_direction_stats.parquet` | sup_figure1 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
 | `data/keio_fitness.tsv` | figure4 | `<FILL_IN: Fitness Browser Keio dataset URL (E. coli BW25113)>` |
-| `data/gtdb/bac120_taxonomy_r232.tsv` | figure1, figure3 | `<FILL_IN: GTDB release r232 download URL>` |
-| `data/gtdb/sp_clusters_r232.tsv` | figure1 | `<FILL_IN: GTDB release r232 download URL>` |
-| `data/gtdb/bac120_r232.tree` | figure1 | `<FILL_IN: GTDB release r232 download URL>` |
-| `data/gff/Bacillus_subtilis_PY79_GCF_023521615.1.gff` | figure2 | `<FILL_IN: NCBI RefSeq GFF3 for GCF_023521615.1>` |
+| `data/gtdb/bac120_taxonomy_r232.tsv` | figure1, figure3 | [GTDB r232 taxonomy](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_taxonomy_r232.tsv) |
+| `data/gtdb/sp_clusters_r232.tsv` | figure1 | [GTDB r232 sp clusters](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/auxillary_files/sp_clusters_r232.tsv) |
+| `data/gtdb/bac120_r232.tree` | figure1 | [GTDB r232 phylogenetic tree](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_r232.tree) |
+| `data/gff/Bacillus_subtilis_PY79_GCF_023521615.1.gff` | figure2 | [Bacillus subtilis PY79 GFF](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/521/615/GCF_023521615.1_ASM2352161v1/GCF_023521615.1_ASM2352161v1_genomic.gff.gz) |
 
 Column descriptions for the three main data tables are in `gene_fitness_lmm_results_columns.md`,
 `library_insert_columns.md`, and `selection_insert_columns.md`.

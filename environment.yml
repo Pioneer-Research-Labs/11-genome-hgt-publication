@@ -1,4 +1,4 @@
-name: 11-genome-paper-figures
+name: 11-genome-hgt-publication
 channels:
   - conda-forge
   - defaults
