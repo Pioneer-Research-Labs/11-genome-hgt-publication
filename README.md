@@ -1,14 +1,17 @@
-# 11-genome-paper-figures
+# 11-genome-hgt-publication
 
 Notebooks to reproduce the figures from the 11-genome pioneer-panel paper.
 
 ## Setup
 
-1. Create the conda environment:
+1. Create the conda environment and register the ipykernel for use with Jupyter:
 
    ```
    conda env create -f environment.yml
-   conda activate 11-genome-paper-figures
+   conda activate 11-genome-hgt-publication
+   ### Register jupyter kernel for running jupyter notebooks
+   python -m ipykernel install --user --name 11-genome-hgt-publication --display-name "11-genome-hgt-publication"
+
    ```
 
 2. Populate `data/` (see **Data** below) -- this folder is gitignored, you create it locally.

@@ -176,7 +176,7 @@ def load_local_gff_databases(gff_dir, species_ids, cache_dir=None):
             species_dbs[species_id] = gffutils.FeatureDB(str(db_path))
             continue
 
-        gff_path = gff_dir / f"{species_id}.gff"
+        gff_path = gff_dir / f"{species_id}.gff.gz"
         if not gff_path.exists():
             raise FileNotFoundError(
                 f"Missing GFF3 annotation for '{species_id}' at {gff_path}. "
