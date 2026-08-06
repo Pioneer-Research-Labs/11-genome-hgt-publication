@@ -1,6 +1,8 @@
 name: 11-genome-hgt-publication
 channels:
+  - pytorch  # CPU-build pytorch for the Bayesian LMM (gene_linear_model_code/02a); see pip note below
   - conda-forge
+  - ejolly  # hosts the pymer4 conda package (gene_linear_model_code/02b, 02c)
   - defaults
   - bioconda
 dependencies:
@@ -18,11 +20,25 @@ dependencies:
   - statsmodels>=0.14
   - scikit-learn>=1.3.1
   - pyarrow>=14.0  # required by pandas for parquet I/O
+  - weasyprint>=60  # renders great_tables' HTML output to PDF (Table 1, figure1.ipynb) --
+                     # pure Cairo/Pango rendering, no browser needed (unlike great_tables'
+                     # own gtsave(), which requires a real Chrome/Chromium install)
+  - polars>=0.20  # required by gene_linear_model_code/pymer4_lmm.py
+  - rpy2>=3.5  # R<->Python bridge for pymer4 (lme4)
+  - pymer4>=0.9  # pulls in r-base/r-lme4/r-lmertest/r-emmeans transitively from conda-forge/ejolly.
+                 # Must be >=0.9: 0.8.x only exposes the old `Lmer` class, not the `lmer` function
+                 # / `tidystats` module that gene_linear_model_code/pymer4_lmm.py imports.
+  - pytorch>=2.0  # Bayesian LMM (02a); installed via conda for a CPU build (see pip note below)
   - pip
   - pip:
     - great_tables>=0.12
     - adjusttext>=0.8
     - plotly>=5.0
-    - kaleido>=0.2.1  # static image export for the Figure 2 Sankey diagram
+    - kaleido>=0.2.1,<1.0  # static image export for the Figure 2 Sankey diagram; 1.x drops the bundled Chromium and needs a separate Chrome install
     - dendropy>=4.6
-    - git+https://github.com/Pioneer-Research-Labs/pioneer-hgt-core.git@v1.0.0
+    # [bayesian] extra pulls in pyro-ppl + statsmodels per pioneer-hgt-core's own pyproject.toml,
+    # rather than pinning pyro-ppl by hand here. torch is still installed via conda above (a
+    # plain `pip install torch` on Linux tends to resolve to the CUDA-bundled wheel); pip's
+    # resolver sees the conda-installed torch already satisfies this extra's torch>=2.0.0
+    # constraint and skips reinstalling it.
+    - pioneer-hgt-core[bayesian] @ git+https://github.com/Pioneer-Research-Labs/pioneer-hgt-core.git@v1.0.0
