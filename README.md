@@ -1,10 +1,18 @@
 # 11-genome-hgt-publication
 
-Notebooks to reproduce the figures from the 11-genome pioneer-panel paper.
+Notebooks to reproduce the figures and gene-level linear model analysis in Pioneer Lab's report "Microbial engineering benefits from transfer of genes across large phylogenetic distances".
 
 ## Setup
 
-1. Create the conda environment and register the ipykernel for use with Jupyter:
+Note -- you must have conda/miniconda, git, and internet access.
+
+1. Clone this respository:
+    ```
+    git clone https://github.com/Pioneer-Research-Labs/11-genome-hgt-publication.git
+    cd 11-genome-hgt-publication
+    ```
+
+2. Create the conda environment and register the ipykernel for use with Jupyter:
 
    ```
    conda env create -f environment.yml
@@ -14,8 +22,8 @@ Notebooks to reproduce the figures from the 11-genome pioneer-panel paper.
 
    ```
 
-2. Populate `data/` (see **Data** below) -- this folder is gitignored, you create it locally.
-3. Run the notebooks in the order listed under **Notebooks** below.
+3. Populate `data/` (see **Data** below) -- this folder is gitignored, you create it locally.
+4. Run the notebooks in the order listed under **Notebooks** below.
 
 ## System Requirements
 
@@ -41,37 +49,27 @@ below), which fits per-gene linear mixed models via R's `lme4` through
 
 ## Data
 
-This repo does not bundle data. Create a local `data/` folder at the repo root and place the
-following files in it before running any notebook:
+This repo does not bundle data. Data sources from public repositories is linked below. Data generated for this report is located at TODO: FILL IN ZENODO.
+
+After cloning a local copy of the repository, create a  `data/` folder at the repo root and place the following files in it before running any notebook:
 
 | File | Used by | Source |
 |---|---|---|
-| `data/gene_fitness_lmm_results.parquet` | figure3, figure4, sup_figure2, sup_figure3 | `<FILL_IN: public release link>` |
+| `data/gene_fitness_lmm_results.parquet` | figure3, figure4, figure5, sup_figure2 | `<FILL_IN: public release link>` |
 | `data/library_insert_data.parquet` | figure1 | `<FILL_IN: public release link>` |
-| `data/selection_insert_data.parquet` | figure2, sup_figure1, sup_figure2 | `<FILL_IN: public release link>` |
+| `data/selection_insert_data.parquet` | figure2, figure3, sup_figure1 | `<FILL_IN: public release link>` |
 | `data/gene_annotation.parquet` | figure1 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
-| `data/strand_direction_stats.parquet` | sup_figure2 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
+| `data/strand_direction_stats.parquet` | figure3 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
 | `data/clonal_validation_data.csv` | figure2, sup_figure1 | `<FILL_IN: public release link>` |
-| `data/fit_organism_Keio.tab` | figure4 | [E coli FitnessBrowser Data](https://fit.genomics.lbl.gov/cgi-bin/createFitData.cgi?orgId=Keio) (see note below) |
-| `data/gtdb/bac120_taxonomy_r232.tsv` | figure1, figure3 | [GTDB r232 taxonomy](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_taxonomy_r232.tsv) |
+| `data/fit_organism_Keio.tab` | figure5 | [E coli FitnessBrowser Data](https://fit.genomics.lbl.gov/cgi-bin/createFitData.cgi?orgId=Keio) (see note below) |
+| `data/gtdb/bac120_taxonomy_r232.tsv` | figure1, figure4 | [GTDB r232 taxonomy](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_taxonomy_r232.tsv) |
 | `data/gtdb/sp_clusters_r232.tsv` | figure1 | [GTDB r232 sp clusters](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/auxillary_files/sp_clusters_r232.tsv) |
 | `data/gtdb/bac120_r232.tree` | figure1 | [GTDB r232 phylogenetic tree](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_r232.tree) |
 | `data/GCF_023521615.1_ASM2352161v1_genomic.gff.gz` | figure2 | [Bacillus subtilis PY79 GFF](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/521/615/GCF_023521615.1_ASM2352161v1/GCF_023521615.1_ASM2352161v1_genomic.gff.gz) |
 
-Column descriptions for the three main data tables are in `gene_fitness_lmm_results_columns.md`,
-`library_insert_columns.md`, and `selection_insert_columns.md`.
+Column descriptions for the three main data tables are stored alongside the parquet files in Zenodo.
 
-`data/strand_direction_stats.parquet` are not yet part of the
-public dataset release -- they'll need to be added there before an external reader can populate
-`data/` and actually run `sup_figure2.ipynb`.
-
-GFF files are standard NCBI RefSeq GFF3 annotations -- place them directly in `data/` under
-their unmodified downloaded name (only `GCF_023521615.1_ASM2352161v1_genomic.gff.gz` is needed
-here, for `Bacillus_subtilis_PY79_GCF_023521615.1`). `utils.load_local_gff_databases` builds a
-local `gffutils` database from each one the first time it's called and caches it in
-`data/.cache/`.
-
-The KEIO fitness data (`data/fit_organism_Keio.tsv`) is served behind Cloudflare bot
+NOTE: The KEIO fitness data (`data/fit_organism_Keio.tsv`) is served behind Cloudflare bot
 protection, so `wget`/`curl` get a 403 instead of the file -- it has to be downloaded through
 an actual browser:
 
@@ -80,19 +78,19 @@ an actual browser:
 
 ## Notebooks
 
-Run `figure1.ipynb` before `figure3.ipynb` and `figure4.ipynb` -- both read an intermediate
+Run `figure1.ipynb` before `figure4.ipynb` and `figure5.ipynb` -- both read an intermediate
 file (`results/pioneer_genome_gtdb_phylogeny.tsv`) that `figure1.ipynb` writes. The rest have no
 cross-notebook dependencies.
 
 | Notebook | Produces | Depends on |
 |---|---|---|
 | `figure1.ipynb` | Figure 1a, 1c, 1d, 1e, 1f | -- (writes `results/pioneer_genome_gtdb_phylogeny.tsv`) |
-| `figure2.ipynb` | Figure 2b, 2c, 2d, gene-analysis Sankey | -- |
-| `figure3.ipynb` | Figure 3a-3f | `figure1.ipynb` |
-| `figure4.ipynb` | Figure 4a-4e | `figure1.ipynb` |
+| `figure2.ipynb` | Figure 2b, 2c, 2d, 2e, 2f | -- |
+| `figure3.ipynb` | Figure 3a-3c | -- |
+| `figure4.ipynb` | Figure 4a-4f | `figure1.ipynb` |
+| `figure5.ipynb` | Figure 5a-5e | `figure1.ipynb` |
 | `sup_figure1.ipynb` | Sup Figure 1a | -- |
 | `sup_figure2.ipynb` | Sup Figure 2a-2c | -- |
-| `sup_figure3.ipynb` | Sup Figure 3a-3c | -- |
 
 Each notebook writes its output figures to a local `results/` folder (gitignored --
 regenerated, not committed).
