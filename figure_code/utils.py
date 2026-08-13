@@ -146,20 +146,24 @@ def _fitness_label(fitness_mode):
 # Local replacement for seq2anno.s3_genomes.load_genome_resources_from_s3
 # =============================================================================
 
-def load_local_gff_databases(gff_dir, species_ids, cache_dir=None):
+def load_local_gff_databases(gff_dir, species_gff_map, cache_dir=None):
     """
     Build gffutils FeatureDB objects from local GFF3 files.
 
     Replaces the private seq2anno.load_genome_resources_from_s3() call, which
-    streamed pre-built databases from an internal S3 bucket. Here, each
-    species' GFF3 annotation is expected at `gff_dir / f"{species_id}.gff"`
-    (species_id matching the pioneer_genome naming, e.g.
-    "Bacillus_subtilis_PY79_GCF_023521615.1") -- download the matching NCBI
-    RefSeq GFF3 file for each species listed in the README's Data section.
+    streamed pre-built databases from an internal S3 bucket. `species_gff_map`
+    maps each species_id (matching the pioneer_genome/species_full naming used
+    in the dataframes, e.g. "Bacillus_subtilis_PY79_GCF_023521615.1") to the
+    basename of its GFF3 file as downloaded from NCBI RefSeq, unmodified (e.g.
+    "GCF_023521615.1_ASM2352161v1_genomic" for a
+    GCF_023521615.1_ASM2352161v1_genomic.gff.gz file) -- see the README's Data
+    section for the download link. The two names differ, so this mapping lets
+    the returned dict be keyed by species_id (matching the dataframes) without
+    requiring the user to rename the downloaded file.
 
     Args:
-        gff_dir: Directory containing one {species_id}.gff file per species.
-        species_ids: List of species_id strings to load.
+        gff_dir: Directory containing one {gff_basename}.gff.gz file per species.
+        species_gff_map: Dict mapping species_id -> gff_basename.
         cache_dir: Where to cache built .gffdb files (default: gff_dir/.cache).
 
     Returns:
@@ -170,13 +174,13 @@ def load_local_gff_databases(gff_dir, species_ids, cache_dir=None):
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     species_dbs = {}
-    for species_id in species_ids:
-        db_path = cache_dir / f"{species_id}.gffdb"
+    for species_id, gff_basename in species_gff_map.items():
+        db_path = cache_dir / f"{gff_basename}.gffdb"
         if db_path.exists():
             species_dbs[species_id] = gffutils.FeatureDB(str(db_path))
             continue
 
-        gff_path = gff_dir / f"{species_id}.gff"
+        gff_path = gff_dir / f"{gff_basename}.gff.gz"
         if not gff_path.exists():
             raise FileNotFoundError(
                 f"Missing GFF3 annotation for '{species_id}' at {gff_path}. "
