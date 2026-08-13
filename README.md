@@ -49,18 +49,18 @@ below), which fits per-gene linear mixed models via R's `lme4` through
 
 ## Data
 
-This repo does not bundle data. Data sources from public repositories is linked below. Data generated for this report is located at TODO: FILL IN ZENODO.
+This repo does not bundle data. Data sources from public repositories is linked below. Data generated for this report is stored on Zenodo at https://doi.org/10.5281/zenodo.21812923
 
 After cloning a local copy of the repository, create a  `data/` folder at the repo root and place the following files in it before running any notebook:
 
 | File | Used by | Source |
 |---|---|---|
-| `data/gene_fitness_lmm_results.parquet` | figure3, figure4, figure5, sup_figure2 | `<FILL_IN: public release link>` |
-| `data/library_insert_data.parquet` | figure1 | `<FILL_IN: public release link>` |
-| `data/selection_insert_data.parquet` | figure2, figure3, sup_figure1 | `<FILL_IN: public release link>` |
-| `data/gene_annotation.parquet` | figure1 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
-| `data/strand_direction_stats.parquet` | figure3 | `<FILL_IN: public release link -- not yet in the internal Figshare-prep pipeline, needs to be added>` |
-| `data/clonal_validation_data.csv` | figure2, sup_figure1 | `<FILL_IN: public release link>` |
+| `data/gene_fitness_lmm_results.parquet` | figure3, figure4, figure5, sup_figure2 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/library_insert_data.parquet` | figure1 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/selection_insert_data.parquet` | figure2, figure3, sup_figure1 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/gene_annotation.parquet` | figure1 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/strand_direction_stats.parquet` | figure3 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/clonal_validation_data.csv` | figure2, sup_figure1 | `https://doi.org/10.5281/zenodo.21812923` |
 | `data/fit_organism_Keio.tab` | figure5 | [E coli FitnessBrowser Data](https://fit.genomics.lbl.gov/cgi-bin/createFitData.cgi?orgId=Keio) (see note below) |
 | `data/gtdb/bac120_taxonomy_r232.tsv` | figure1, figure4 | [GTDB r232 taxonomy](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_taxonomy_r232.tsv) |
 | `data/gtdb/sp_clusters_r232.tsv` | figure1 | [GTDB r232 sp clusters](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/auxillary_files/sp_clusters_r232.tsv) |
