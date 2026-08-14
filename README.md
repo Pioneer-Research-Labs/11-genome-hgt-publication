@@ -49,25 +49,30 @@ below), which fits per-gene linear mixed models via R's `lme4` through
 
 ## Data
 
-This repo does not bundle data. Data sources from public repositories is linked below. Data generated for this report is stored on Zenodo at https://doi.org/10.5281/zenodo.21812923
+This repo does not bundle data. Data sources from public repositories are linked below. Data generated for this report are stored on Zenodo at https://doi.org/10.5281/zenodo.21812923
 
 After cloning a local copy of the repository, create a  `data/` folder at the repo root and place the following files in it before running any notebook:
 
 | File | Used by | Source |
 |---|---|---|
-| `data/gene_fitness_lmm_results.parquet` | figure3, figure4, figure5, sup_figure2 | `https://doi.org/10.5281/zenodo.21812923` |
-| `data/library_insert_data.parquet` | figure1 | `https://doi.org/10.5281/zenodo.21812923` |
-| `data/selection_insert_data.parquet` | figure2, figure3, sup_figure1 | `https://doi.org/10.5281/zenodo.21812923` |
-| `data/gene_annotation.parquet` | figure1 | `https://doi.org/10.5281/zenodo.21812923` |
-| `data/strand_direction_stats.parquet` | figure3 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/gene_fitness_results_with_annotations.parquet` | figure1, figure2, figure3, figure4, figure5, sup_figure2, `gene_linear_model_code` (all four) | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/library_characterization_insert_data.parquet` | figure1 | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/selection_experiment_insert_data.parquet` | figure2, figure3, sup_figure1, `gene_linear_model_code` (all four) | `https://doi.org/10.5281/zenodo.21812923` |
+| `data/directional_lmer_stats.parquet` | figure3 | `https://doi.org/10.5281/zenodo.21812923` |
 | `data/clonal_validation_data.csv` | figure2, sup_figure1 | `https://doi.org/10.5281/zenodo.21812923` |
-| `data/fit_organism_Keio.tab` | figure5 | [E coli FitnessBrowser Data](https://fit.genomics.lbl.gov/cgi-bin/createFitData.cgi?orgId=Keio) (see note below) |
-| `data/gtdb/bac120_taxonomy_r232.tsv` | figure1, figure4 | [GTDB r232 taxonomy](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_taxonomy_r232.tsv) |
-| `data/gtdb/sp_clusters_r232.tsv` | figure1 | [GTDB r232 sp clusters](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/auxillary_files/sp_clusters_r232.tsv) |
-| `data/gtdb/bac120_r232.tree` | figure1 | [GTDB r232 phylogenetic tree](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_r232.tree) |
+| `data/fit_organism_Keio.tsv` | figure5 | [E coli FitnessBrowser Data](https://fit.genomics.lbl.gov/cgi-bin/createFitData.cgi?orgId=Keio) (see note below) |
+| `data/bac120_taxonomy_r232.tsv` | figure1 | [GTDB r232 taxonomy](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_taxonomy_r232.tsv) |
+| `data/sp_clusters_r232.tsv` | figure1 | [GTDB r232 sp clusters](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/auxillary_files/sp_clusters_r232.tsv) |
+| `data/bac120_r232.tree` | figure1 | [GTDB r232 phylogenetic tree](https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_r232.tree) |
 | `data/GCF_023521615.1_ASM2352161v1_genomic.gff.gz` | figure2 | [Bacillus subtilis PY79 GFF](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/521/615/GCF_023521615.1_ASM2352161v1/GCF_023521615.1_ASM2352161v1_genomic.gff.gz) |
 
 Column descriptions for the three main data tables are stored alongside the parquet files in Zenodo.
+
+NOTE: The GFF file is a standard NCBI RefSeq GFF3 annotation and, unlike the files above, is not
+bundled on Zenodo -- download it from the NCBI link and place it directly in `data/` under its
+unmodified downloaded name (`GCF_023521615.1_ASM2352161v1_genomic.gff.gz`, no renaming needed).
+`utils.load_local_gff_databases` builds a local `gffutils` database from it the first time it's
+called and caches it in `data/.cache/`.
 
 NOTE: The KEIO fitness data (`data/fit_organism_Keio.tsv`) is served behind Cloudflare bot
 protection, so `wget`/`curl` get a 403 instead of the file -- it has to be downloaded through
