@@ -1,8 +1,8 @@
 name: 11-genome-hgt-publication
 channels:
-  - pytorch  # CPU-build pytorch for the Bayesian LMM (gene_linear_model_code/02a); see pip note below
+  - pytorch  # CPU-build pytorch for the Bayesian LMM (gene_linear_model_code/run_bayesian_lmm_lb_salt.ipynb); see pip note below
   - conda-forge
-  - ejolly  # hosts the pymer4 conda package (gene_linear_model_code/02b, 02c)
+  - ejolly  # hosts the pymer4 conda package (gene_linear_model_code/run_lmer_lmm_lb_salt.py, run_lmer_lmm_lb_salt_direction.py)
   - defaults
   - bioconda
 dependencies:
@@ -28,7 +28,7 @@ dependencies:
   - pymer4>=0.9  # pulls in r-base/r-lme4/r-lmertest/r-emmeans transitively from conda-forge/ejolly.
                  # Must be >=0.9: 0.8.x only exposes the old `Lmer` class, not the `lmer` function
                  # / `tidystats` module that gene_linear_model_code/pymer4_lmm.py imports.
-  - pytorch>=2.0  # Bayesian LMM (02a); installed via conda for a CPU build (see pip note below)
+  - pytorch>=2.0  # Bayesian LMM (run_bayesian_lmm_lb_salt.ipynb); installed via conda for a CPU build (see pip note below)
   - pip
   - pip:
     - great_tables>=0.12
